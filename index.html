@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--google-font--->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&display=swap"
+      rel="stylesheet"
+    />
+    <!--font-Awesome-->
+    <link rel="stylesheet" href="./CSS/all.min.css" />
+    <!--bootstrap-->
+    <link rel="stylesheet" href="./CSS/bootstrap.min.css" />
+    <!--css-main-->
+    <link rel="stylesheet" href="./CSS/style.css" />
+    <title>CRUD</title>
+  </head>
+  <body class="bg-light">
+    
+    <header class="text-bg-primary text-center py-3">
+      <h1 class="display-4 fw-bold m-0">Store Management System</h1>
+      <p class="fs-5">Efficiently manage your product inventory</p>
+    </header>
+
+    <main>
+      <section>
+        <div class="container bg-white shadow mt-5 py-3 px-0">
+          <div
+            class="section-header d-flex align-items-center text-primary border-bottom border-2 p-3"
+          >
+            <i class="fas fa-plus-circle fs-4 me-2"></i>
+            <h2 class="mb-0">Add New Product</h2>
+          </div>
+          <form>
+            <div class="container mt-4 px-4">
+              <div class="row">
+                <div class="col-lg-6 mt-3">
+                  <div class="form-floating mb-3">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="productName"
+                      placeholder="product Name"
+                      oninput="validateProductName()"
+                    />
+                    <label for="productName" class="fs-5">
+                      <i class="fas fa-tag me-1"></i> product Name</label
+                    >
+                    <p id="NameMsg" class="alert alert-danger mt-2 px-2 p-1 d-none">Name must be atLeast 4 characters</p>
+                  </div>
+                </div>
+                <div class="col-lg-6 mt-3">
+                  <div class="form-floating mb-3">
+                    <input
+                      type="number"
+                      class="form-control"
+                      oninput="validateProductPrice()"
+                      id="productPrice"
+                      placeholder="product Price"
+                    />
+                    <label for="productPrice" class="fs-5">
+                      <i class="fas fa-dollar-sign me-1"></i> product Price</label
+                    >
+                     <p id="priceMsg" class="alert alert-danger mt-2 px-2 p-1 d-none">Price must be more than 5,000 EGP</p>
+                  </div>
+                </div>
+                <div class="col-lg-6 mt-3">
+                  <div class="form-floating mb-3">
+                    <input
+                      list="prodCat"
+                      class="form-control"
+                      oninput="validateProductCategory()"
+                      id="productCategory"
+                      placeholder="product Category"
+                    />
+                    <label for="productCategory"  class="fs-5">
+                      <i class="fa-solid fa-grip-vertical me-1"></i>product Category</label
+                    >
+                    <p id="categoryeMsg" class="alert alert-danger mt-2 px-2 p-1 d-none">This category is not available.</p>
+                  
+                    <datalist id="prodCat">
+                      <option value="Tv"></option>
+                      <option value="Mobile"></option>
+                      <option value="Labtop"></option>
+                    </datalist>
+                  </div>
+                </div>
+                <div class="col-lg-6 mt-3">
+                  <div class="form-floating mb-3">
+                    <input
+                      type="file"
+                      class="form-control"
+                      id="productImage"
+                      placeholder="product Image"
+                      onchange="previewImage(); validateProductImage();"
+                    />
+                    <label for="productImage"  class="fs-4">
+                      <i class="fa-regular fa-image me-1"></i> product Image</label
+                    >
+                     <p id="imageMsg" class="alert alert-danger mt-2 px-2 p-1 d-none">This image is not available.</p>
+                  </div>
+                </div>
+                <div class="col-lg-6 mt-3">
+                  <img src="./IMAGES/iphone-16-pro.avif" id="imagePreview" class="d-none img-thumbnail image-preview" alt="image preview">
+                </div>
+                <div class="col-lg-12 mt-3">
+                  <div class="form-floating mb-3">
+                    <textarea
+                      type="text"
+                      class="form-control"
+                      oninput="validateProductDesc()"
+                      id="productDescribtion"
+                      placeholder="product Describtion"
+                    ></textarea>
+                    <label for="productDescribtion" class="fs-5">
+                      <i class="fa-regular fa-credit-card me-1"></i> product Describtion</label
+                    >
+                     <p id="descMsg" class="alert alert-danger mt-2 px-2 p-1 d-none">EERRO</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between my-3  align-items-center px-4">
+              <button
+                onclick="addProduct()"
+                id="addProd"
+                type="button"
+                class="btn btn-primary fs-5"
+              >
+                <i class="fa-solid fa-circle-plus me-2"></i>Add Product
+              </button>
+              <button
+                onclick="uptadeProduct()"
+                id="updProd"
+                type="button"
+                class="btn btn-warning d-none fs-5"
+              >
+                <i class="fa-solid fa-circle-plus me-2"></i>update Product
+              </button>
+              <input
+                type="search"
+                oninput="searchByName()"
+                id="productSearch"
+                class="form-control w-50 border border-2 rounded-3"
+                placeholder="Search product..."
+              />
+            </div>
+            <div class="d-flex flex-row-reverse my-3 px-4">
+                <input
+                type="search"
+                oninput="searchByCategory()"
+                id="searchCategory"
+                class="form-control  w-50 border border-2 rounded-3"
+                placeholder="Search product by category..."
+              />
+            </div>
+          </form>
+        </div>
+      </section>
+      <section>
+        <div class="container mt-5 py-5">
+          <div class="d-flex justify-content-between align-items-center py-4">
+
+            <div class="section-header d-flex align-items-center gap-2">
+              <i class="fas fa-grid-vertical fs-4"></i>
+              <h2 class="mb-0">Product Inventory</h2>
+            </div>
+
+            <p class="badge text-bg-primary fs-5" id="badge-count"> Products</p>
+          </div>
+          <div class="row g-4" id="prouductCards">
+           <!-- <div class="col-lg-4">
+              <div class="card border-0 shadow">
+                <div class="position-relative">
+                  <img
+                    src="./IMAGES/iphone-16-pro.avif"
+                    class="card-img-top image-card"
+                    alt="iphone 16 pro"
+                  />
+                  <span
+                    class="badge rounded-pill badge-card text-bg-primary px-3 py-2 fs-5"
+                    >Mobile</span
+                  >
+                </div>
+               <div class="card-body">
+                  <h5 class="card-title fs-4">iPhone 16</h5>
+                  <p class="card-text fs-5 text-muted">
+                    Latest iPhone with advanced features and improved camera
+                    system.
+                  </p>
+                  <div class="d-flex justify-content-between">
+                    <p class="text-primary fw-semibold fs-3">₹50,000</p>
+                    <div class="d-flex align-items-center">
+                      <button class="btn btn-outline-danger rounded-end-0">
+                        <i class="fas fa-trash-can"></i>
+                      </button>
+                      <button class="btn btn-outline-warning rounded-start-0">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-lg-4">
+              <div class="card shadow border-0">
+                <div class="position-relative">
+                  <img
+                    src="./IMAGES/Samsung 4K Smart TV.avif"
+                    class="card-img-top image-card"
+                    alt="iphone 16 pro"
+                  />
+                  <span
+                    class="badge rounded-pill badge-card text-bg-success px-3 py-2 fs-5"
+                    >Tv</span
+                  >
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title fs-4">Samsung 4K Smart TV</h5>
+                  <p class="card-text fs-5 text-muted">
+                    55-inch 4K Ultra HD Smart TV with HDR and built-in streaming
+                    apps.
+                  </p>
+                  <div class="d-flex justify-content-between">
+                    <p class="text-primary fw-semibold fs-3">₹65,000</p>
+                    <div class="d-flex align-items-center">
+                      <button class="btn btn-outline-danger rounded-end-0">
+                        <i class="fas fa-trash-can"></i>
+                      </button>
+                      <button class="btn btn-outline-warning rounded-start-0">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="card border-0 shadow">
+                <div class="position-relative">
+                  <img
+                    src="./IMAGES/MacBook Pro.avif"
+                    class="card-img-top image-card"
+                    alt="iphone 16 pro"
+                  />
+                  <span
+                    class="badge rounded-pill badge-card text-bg-info text-white px-3 py-2 fs-5"
+                    >Laptop</span
+                  >
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title fs-4">MacBook Pro</h5>
+                  <p class="card-text fs-5 text-muted">
+                    Powerful laptop with M2 chip, perfect for professionals and
+                    creatives.
+                  </p>
+                  <div class="d-flex justify-content-between">
+                    <p class="text-primary fw-semibold fs-3">₹1,25,000</p>
+                    <div class="d-flex align-items-center">
+                      <button class="btn btn-outline-danger rounded-end-0">
+                        <i class="fas fa-trash-can"></i>
+                      </button>
+                      <button class="btn btn-outline-warning rounded-start-0">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            -->
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="bg-dark text-white mt-5 py-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <h5 class="fs-4 mb-3">Store Management System</h5>
+            <p class="mb-0 text-light ">Efficiently manage your product inventory with our easy-to-use system.</p>
+          </div>
+          <div class="col-12 col-md-6 text-md-end">
+            <p class="fs-5 mb-1">© 2023 Store Management System. All rights reserved.</p>
+            <p class="fs-5 mb-0">Made with <i class="fa-solid fa-heart" style="color:red;"></i> by Route Academy</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  
+
+    <script src="./JS/bootstrap.bundle.min.js"></script>
+    <script src="./JS/main.js"></script>
+  </body>
+</html>

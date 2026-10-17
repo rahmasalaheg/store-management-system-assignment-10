@@ -1,0 +1,46 @@
+/*GLOBAL CLASSES*/
+
+body{
+    font-family: "Alan Sans", sans-serif;
+}
+
+
+.form-control{
+    border: unset;
+    border-radius: unset;
+    border-bottom: 3px solid #0d6efd;
+}
+
+.form-control:focus{
+    box-shadow: none;
+}
+
+.form-floating>.form-control:not(:placeholder-shown) {
+    padding-top: 2.55rem;
+    padding-bottom: .625rem;
+}
+
+.image-card{
+    object-fit: cover;
+    object-position: center;
+    height: 230px;
+    width: 100%;
+}
+
+.badge-card{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.image-preview{
+    height: 120px;
+}
+
+.form-control.is-invalid:focus{
+    box-shadow: unset;
+}
+
+.form-control.is-valid:focus{
+    box-shadow: unset;
+}
