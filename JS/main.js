@@ -68,6 +68,7 @@ function clearInputValues(){
 //بعتنا ال arrayده عشان ال الفانكشن تكون مش مقتصره فقط علي productlist
 function displayProduct( array){
    badgeCount.innerHTML = `${productList.length} products`
+   var originalIndex = productList.indexOf(array[i])
     var caartona = ""
     for( var i = 0; i < array.length; i++){
         caartona += `
@@ -93,10 +94,10 @@ function displayProduct( array){
                   <div class="d-flex justify-content-between">
                     <p class="text-primary fw-semibold fs-3">${array[i].price}</p>
                     <div class="d-flex align-items-center">
-                      <button onclick="deletProduct(${i})" class="btn btn-outline-danger rounded-end-0">
+                      <button onclick="deletProduct(${originalIndex})" class="btn btn-outline-danger rounded-end-0">
                         <i class="fas fa-trash-can"></i>
                       </button>
-                      <button onclick="getProductToUpdate(${i})" class="btn btn-outline-warning rounded-start-0">
+                      <button onclick="getProductToUpdate(${originalIndex})" class="btn btn-outline-warning rounded-start-0">
                         <i class="fas fa-edit"></i>
                       </button>
                     </div>
