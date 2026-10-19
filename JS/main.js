@@ -1,4 +1,3 @@
-
 // CRUDS .... (create)
 var productName = document.getElementById("productName");
 var productPrice = document.getElementById("productPrice");
@@ -13,65 +12,95 @@ var updateButton = document.getElementById("updProd");
 var addButton = document.getElementById("addProd");
 
 var updateIndex;
-var productList = []
+var productList = [];
 
 //بعد مما بنحتفظ بالداتا عايزين نحصل عليها وكمان نرجعها لاصلها
 
-if(localStorage.getItem("productArray")!== null){
-   productList = JSON.parse(localStorage.getItem("productArray"))
-   displayProduct(productList)
+if (localStorage.getItem("productArray") !== null) {
+  productList = JSON.parse(localStorage.getItem("productArray"));
+  displayProduct(productList);
 }
 
-function addProduct(){
-  if(validateProductName() 
-  && validateProductPrice()
-  && validateProductCategory()
-  && validateProductImage()
-  && validateProductDesc()){
-   var product = {
-    name:productName.value,
-    price:productPrice.value,
-    category:productCategory.value,
-    description:productDescribtion.value,
-    //هنقوله لو الصوره موجوده ضيفها ولو مش موجوده ضيف صوره(no image)
-    image:`${productImage.files[0] ? `./IMAGES/${productImage.files[0].name}` : "./IMAGES/no-image.jpg "}`
-   }
-   productList.push(product);
-   //هنحفظ الداتا داخل localStorage
-   localStorage.setItem("productArray" , JSON.stringify(productList))
-   clearInputValues();
-   displayProduct(productList);
-  }else{
-    alert("etl3 bara")
+function addProduct() {
+  if (!validateProductName()) {
+    Swal.fire({
+      title: "Missing Product Name",
+      text: "Please enter a valid product name!",
+      icon: "error",
+    });
+    return;
+  }
+  if (!validateProductPrice()) {
+    Swal.fire({
+      title: "Missing Product Price",
+      text: "Please enter a valid product price!",
+      icon: "error",
+    });
+    return;
+  }
+  if (!validateProductCategory()) {
+    Swal.fire({
+      title: "Missing Product Category ",
+      text: "Please enter a product category!",
+      icon: "error",
+    });
+    return;
+  }
+  if (!validateProductDesc()) {
+    Swal.fire({
+      title: "Missing Product Description",
+      text: "Please enter a valid product description!",
+      icon: "error",
+    });
+    return;
   }
 
+  var product = {
+    name: productName.value,
+    price: productPrice.value,
+    category: productCategory.value,
+    description: productDescribtion.value,
+    //هنقوله لو الصوره موجوده ضيفها ولو مش موجوده ضيف صوره(no image)
+    image: `${productImage.files[0] ? `./IMAGES/${productImage.files[0].name}` : "./IMAGES/no-image.jpg "}`,
+  };
+  productList.push(product);
+  //هنحفظ الداتا داخل localStorage
+  localStorage.setItem("productArray", JSON.stringify(productList));
+  clearInputValues();
+  displayProduct(productList);
+
+  Swal.fire({
+    title: "Success",
+    text: "Product added successfully.",
+    icon: "success",
+  });
 }
 
-  // عشان نحذف مدخلات المستخدم بعد مايضغط علي الزرار
-function clearInputValues(){
-    productName.value = ""
-    productPrice.value = ""
-    productCategory.value = ""
-    productDescribtion.value = ""
+// عشان نحذف مدخلات المستخدم بعد مايضغط علي الزرار
+function clearInputValues() {
+  productName.value = "";
+  productPrice.value = "";
+  productCategory.value = "";
+  productDescribtion.value = "";
 
-    imagePreview.classList.add("d-none")
+  imagePreview.classList.add("d-none");
 
-    productName.classList.remove("is-valid")
-    productPrice.classList.remove("is-valid")
-    productCategory.classList.remove("is-valid")
-    productImage.classList.remove("is-valid")
-    productDescribtion.classList.remove("is-valid")
-}    
+  productName.classList.remove("is-valid");
+  productPrice.classList.remove("is-valid");
+  productCategory.classList.remove("is-valid");
+  productImage.classList.remove("is-valid");
+  productDescribtion.classList.remove("is-valid");
+}
 
 // CRUDS .... (read / display)
 
 //بعتنا ال arrayده عشان ال الفانكشن تكون مش مقتصره فقط علي productlist
-function displayProduct( array){
-   badgeCount.innerHTML = `${productList.length} products`
-   var originalIndex = productList.indexOf(array[i])
-    var caartona = ""
-    for( var i = 0; i < array.length; i++){
-        caartona += `
+function displayProduct(array) {
+  badgeCount.innerHTML = `${productList.length} products`;
+  var caartona = "";
+  for (var i = 0; i < array.length; i++) {
+    var originalIndex = productList.indexOf(array[i]);
+    caartona += `
          <div class="col-lg-4 col-md-6 col-12">
               <div class="card border-0 shadow">
                 <div class="position-relative">
@@ -105,163 +134,198 @@ function displayProduct( array){
                 </div>
               </div>
             </div>
-        `
-    }
-    document.getElementById("prouductCards").innerHTML = caartona
+        `;
+  }
+  document.getElementById("prouductCards").innerHTML = caartona;
 }
 
 //لاضافه الصوره جمب input الfiles
-function previewImage(){
-  if(productImage.files[0]){
+function previewImage() {
+  if (productImage.files[0]) {
     var fileName = productImage.files[0].name;
     imagePreview.src = "./IMAGES/" + fileName;
-    imagePreview.classList.remove("d-none")
+    imagePreview.classList.remove("d-none");
   }
 }
 
 //CRUDS ....(delete)
 
-function deletProduct(index){
-  productList.splice(index,1)
-  localStorage.setItem("productArray" , JSON.stringify(productList))
-  displayProduct(productList)
+function deletProduct(index) {
+  Swal.fire({
+    title: "Delete Contact?",
+    text: `Are you sure you want to delete ? This action cannot be undone.`,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#6b7280",
+    confirmButtonText: "Yes, delete it!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      productList.splice(index, 1);
+      localStorage.setItem("productArray", JSON.stringify(productList));
+      displayProduct(productList);
+
+      Swal.fire({
+        title: "Deleted!",
+        text: "Your contact has been deleted.",
+        icon: "success",
+      });
+    }
+  });
 }
 
 //CRUDS ....(Search)
 
-function searchByName(){
-  var searchValue = productSearch.value
+function searchByName() {
+  var searchValue = productSearch.value;
 
-  var searchArray = []
+  var searchArray = [];
 
-  for(var i =0; i < productList.length; i++){
-    if(productList[i].name.trim().toLowerCase().includes(searchValue.trim().toLowerCase())){
-      searchArray.push(productList[i])
+  for (var i = 0; i < productList.length; i++) {
+    if (
+      productList[i].name
+        .trim()
+        .toLowerCase()
+        .includes(searchValue.trim().toLowerCase())
+    ) {
+      searchArray.push(productList[i]);
     }
   }
-  displayProduct(searchArray)
+  displayProduct(searchArray);
 }
 
-function searchByCategory(){
- var searchCategoryValue = searchCategory.value
-  var searchCategoryArray = []
- for( var i = 0; i < productList.length; i++){
-  if(productList[i].category.trim().toLowerCase().includes(searchCategoryValue.trim().toLowerCase()))
-  {
-    searchCategoryArray.push(productList[i])
+function searchByCategory() {
+  var searchCategoryValue = searchCategory.value;
+  var searchCategoryArray = [];
+  for (var i = 0; i < productList.length; i++) {
+    if (
+      productList[i].category
+        .trim()
+        .toLowerCase()
+        .includes(searchCategoryValue.trim().toLowerCase())
+    ) {
+      searchCategoryArray.push(productList[i]);
+    }
   }
-  }
-  displayProduct(searchCategoryArray)
+  displayProduct(searchCategoryArray);
 }
 
 //CRUDS ....(UPDATE)
 
-//var updateImageName = ""
-function getProductToUpdate(index){
-  updateIndex = index
+var updateImageName = "";
+function getProductToUpdate(index) {
+  updateIndex = index;
 
-  window.scrollTo(0,0)
-  addButton.classList.add("d-none")
-  updateButton.classList.remove("d-none")
-
-  productName.value = productList[index].name
-  productCategory.value = productList[index].category
-  productDescribtion.value = productList[index].description
-  productPrice.value = productList[index].price
+  window.scrollTo(0, 0);
+  addButton.classList.add("d-none");
+  updateButton.classList.remove("d-none");
+  productName.value = productList[index].name;
+  productCategory.value = productList[index].category;
+  productDescribtion.value = productList[index].description;
+  productPrice.value = productList[index].price;
   //للتعديل على الصوره
-  //updateImageName = productList[index].image
+  updateImageName = productList[index].image;
 }
 
-function uptadeProduct(){
-  productList[updateIndex].name = productName.value 
-  localStorage.setItem("productArray" , JSON.stringify(productList))
-  displayProduct(productList)
-  clearInputValues()
-  addButton.classList.remove("d-none")
-  updateButton.classList.add("d-none")
+function uptadeProduct() {
+  productList[updateIndex].name = productName.value;
+  productList[updateIndex].price = productPrice.value;
+  productList[updateIndex].category = productCategory.value;
+  productList[updateIndex].description = productDescribtion.value;
+  localStorage.setItem("productArray", JSON.stringify(productList));
+  displayProduct(productList);
+  clearInputValues();
+  addButton.classList.remove("d-none");
+  updateButton.classList.add("d-none");
+
+  Swal.fire({
+    title: "Updated!",
+    text: "Product updated successfully.",
+    icon: "success",
+  });
 }
 
 // validation
 
-function validateProductName(){
-  var nameMsg = document.getElementById("NameMsg")
-  var productNameRegex = /^\w{4,}$/
-  if(productNameRegex.test(productName.value)){
-    productName.classList.add("is-valid")
-    productName.classList.remove("is-invalid")
-    nameMsg.classList.add("d-none")
-    return true
-  }else{
-    productName.classList.add("is-invalid")
-    productName.classList.remove("is-valid")
-    nameMsg.classList.remove("d-none")
-    return false
+function validateProductName() {
+  var nameMsg = document.getElementById("NameMsg");
+  var productNameRegex = /^\w{4,}$/;
+  if (productNameRegex.test(productName.value)) {
+    productName.classList.add("is-valid");
+    productName.classList.remove("is-invalid");
+    nameMsg.classList.add("d-none");
+    return true;
+  } else {
+    productName.classList.add("is-invalid");
+    productName.classList.remove("is-valid");
+    nameMsg.classList.remove("d-none");
+    return false;
   }
 }
 
-function validateProductPrice(){
-  var priceMsg = document.getElementById("priceMsg")
-  var productPriceRegex = /^[5-9]\d{3,}$/
-  if(productPriceRegex.test(productPrice.value)){
-    productPrice.classList.add("is-valid")
-    productPrice.classList.remove("is-invalid")
-    priceMsg.classList.add("d-none")
-    return true
-  }else{
-    productPrice.classList.add("is-invalid")
-    productPrice.classList.remove("is-valid")
-    priceMsg.classList.remove("d-none")
-    return false
+function validateProductPrice() {
+  var priceMsg = document.getElementById("priceMsg");
+  var productPriceRegex = /^[5-9]\d{3,}$/;
+  if (productPriceRegex.test(productPrice.value)) {
+    productPrice.classList.add("is-valid");
+    productPrice.classList.remove("is-invalid");
+    priceMsg.classList.add("d-none");
+    return true;
+  } else {
+    productPrice.classList.add("is-invalid");
+    productPrice.classList.remove("is-valid");
+    priceMsg.classList.remove("d-none");
+    return false;
   }
 }
 
-function validateProductCategory(){
-  var categoryeMsg = document.getElementById("categoryeMsg")
+function validateProductCategory() {
+  var categoryeMsg = document.getElementById("categoryeMsg");
   //i....> عشان لو المستخدم كتب بحروف small | captail يقبله عادي
-  var productCategoryRegex = /^(Tv|Mobile|Labtop)$/i
-  if(productCategoryRegex.test(productCategory.value)){
-    productCategory.classList.add("is-valid")
-    productCategory.classList.remove("is-invalid")
-    categoryeMsg.classList.add("d-none")
-    return true
-  }else{
-    productCategory.classList.add("is-invalid")
-    productCategory.classList.remove("is-valid")
-    categoryeMsg.classList.remove("d-none")
-    return false
+  var productCategoryRegex = /^(Tv|Mobile|Labtop)$/i;
+  if (productCategoryRegex.test(productCategory.value)) {
+    productCategory.classList.add("is-valid");
+    productCategory.classList.remove("is-invalid");
+    categoryeMsg.classList.add("d-none");
+    return true;
+  } else {
+    productCategory.classList.add("is-invalid");
+    productCategory.classList.remove("is-valid");
+    categoryeMsg.classList.remove("d-none");
+    return false;
   }
 }
 
-function validateProductImage(){
-  var imageMsg = document.getElementById("imageMsg")
-  var productImageRegex = /^.+\.(jpg|png|jpeg|avif)$/i
-  if(productImageRegex.test(productImage.value)){
-    productImage.classList.add("is-valid")
-    productImage.classList.remove("is-invalid")
-    imageMsg.classList.add("d-none")
-    return true
-  }else{
-    productImage.classList.add("is-invalid")
-    productImage.classList.remove("is-valid")
-    imageMsg.classList.remove("d-none")
-    //عشان نمسح بس ال الصوره انها تظلر في الجمب 
-    imagePreview.classList.add("d-none")
-    return false
+function validateProductImage() {
+  var imageMsg = document.getElementById("imageMsg");
+  var productImageRegex = /^.+\.(jpg|png|jpeg|avif)$/i;
+  if (productImageRegex.test(productImage.value)) {
+    productImage.classList.add("is-valid");
+    productImage.classList.remove("is-invalid");
+    imageMsg.classList.add("d-none");
+    return true;
+  } else {
+    productImage.classList.add("is-invalid");
+    productImage.classList.remove("is-valid");
+    imageMsg.classList.remove("d-none");
+    //عشان نمسح بس ال الصوره انها تظلر في الجمب
+    imagePreview.classList.add("d-none");
+    return false;
   }
 }
 
-function validateProductDesc(){
-  var descMsg = document.getElementById("descMsg")
-  var productDescRegex = /^.{5,}$/m
-  if(productDescRegex.test(productDescribtion.value)){
-    productDescribtion.classList.add("is-valid")
-    productDescribtion.classList.remove("is-invalid")
-    descMsg.classList.add("d-none")
-    return true
-  }else{
-    productDescribtion.classList.add("is-invalid")
-    productDescribtion.classList.remove("is-valid")
-    descMsg.classList.remove("d-none")
-    return false
+function validateProductDesc() {
+  var descMsg = document.getElementById("descMsg");
+  var productDescRegex = /^.{5,}$/m;
+  if (productDescRegex.test(productDescribtion.value)) {
+    productDescribtion.classList.add("is-valid");
+    productDescribtion.classList.remove("is-invalid");
+    descMsg.classList.add("d-none");
+    return true;
+  } else {
+    productDescribtion.classList.add("is-invalid");
+    productDescribtion.classList.remove("is-valid");
+    descMsg.classList.remove("d-none");
+    return false;
   }
 }

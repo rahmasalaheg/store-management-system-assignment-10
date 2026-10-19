@@ -19,7 +19,6 @@
     <title>CRUD</title>
   </head>
   <body class="bg-light">
-    
     <header class="text-bg-primary text-center py-3">
       <h1 class="display-4 fw-bold m-0">Store Management System</h1>
       <p class="fs-5">Efficiently manage your product inventory</p>
@@ -49,7 +48,12 @@
                     <label for="productName" class="fs-5">
                       <i class="fas fa-tag me-1"></i> product Name</label
                     >
-                    <p id="NameMsg" class="alert alert-danger mt-2 px-2 p-1 d-none">Name must be atLeast 4 characters</p>
+                    <p
+                      id="NameMsg"
+                      class="alert alert-danger mt-2 px-2 p-1 d-none"
+                    >
+                      Name must be atLeast 4 characters
+                    </p>
                   </div>
                 </div>
                 <div class="col-lg-6 mt-3">
@@ -62,9 +66,15 @@
                       placeholder="product Price"
                     />
                     <label for="productPrice" class="fs-5">
-                      <i class="fas fa-dollar-sign me-1"></i> product Price</label
+                      <i class="fas fa-dollar-sign me-1"></i> product
+                      Price</label
                     >
-                     <p id="priceMsg" class="alert alert-danger mt-2 px-2 p-1 d-none">Price must be more than 5,000 EGP</p>
+                    <p
+                      id="priceMsg"
+                      class="alert alert-danger mt-2 px-2 p-1 d-none"
+                    >
+                      Price must be more than 5,000 EGP
+                    </p>
                   </div>
                 </div>
                 <div class="col-lg-6 mt-3">
@@ -76,11 +86,17 @@
                       id="productCategory"
                       placeholder="product Category"
                     />
-                    <label for="productCategory"  class="fs-5">
-                      <i class="fa-solid fa-grip-vertical me-1"></i>product Category</label
+                    <label for="productCategory" class="fs-5">
+                      <i class="fa-solid fa-grip-vertical me-1"></i>product
+                      Category</label
                     >
-                    <p id="categoryeMsg" class="alert alert-danger mt-2 px-2 p-1 d-none">This category is not available.</p>
-                  
+                    <p
+                      id="categoryeMsg"
+                      class="alert alert-danger mt-2 px-2 p-1 d-none"
+                    >
+                      This category is not available.
+                    </p>
+
                     <datalist id="prodCat">
                       <option value="Tv"></option>
                       <option value="Mobile"></option>
@@ -95,16 +111,30 @@
                       class="form-control"
                       id="productImage"
                       placeholder="product Image"
-                      onchange="previewImage(); validateProductImage();"
+                      onchange="
+                        previewImage();
+                        validateProductImage();
+                      "
                     />
-                    <label for="productImage"  class="fs-4">
-                      <i class="fa-regular fa-image me-1"></i> product Image</label
+                    <label for="productImage" class="fs-4">
+                      <i class="fa-regular fa-image me-1"></i> product
+                      Image</label
                     >
-                     <p id="imageMsg" class="alert alert-danger mt-2 px-2 p-1 d-none">This image is not available.</p>
+                    <p
+                      id="imageMsg"
+                      class="alert alert-danger mt-2 px-2 p-1 d-none"
+                    >
+                      This image is not available.
+                    </p>
                   </div>
                 </div>
                 <div class="col-lg-6 mt-3">
-                  <img src="./IMAGES/iphone-16-pro.avif" id="imagePreview" class="d-none img-thumbnail image-preview" alt="image preview">
+                  <img
+                    src="./IMAGES/iphone-16-pro.avif"
+                    id="imagePreview"
+                    class="d-none img-thumbnail image-preview"
+                    alt="image preview"
+                  />
                 </div>
                 <div class="col-lg-12 mt-3">
                   <div class="form-floating mb-3">
@@ -116,14 +146,22 @@
                       placeholder="product Describtion"
                     ></textarea>
                     <label for="productDescribtion" class="fs-5">
-                      <i class="fa-regular fa-credit-card me-1"></i> product Describtion</label
+                      <i class="fa-regular fa-credit-card me-1"></i> product
+                      Describtion</label
                     >
-                     <p id="descMsg" class="alert alert-danger mt-2 px-2 p-1 d-none">EERRO</p>
+                    <p
+                      id="descMsg"
+                      class="alert alert-danger mt-2 px-2 p-1 d-none"
+                    >
+                      EERRO
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="d-flex justify-content-between my-3  align-items-center px-4">
+            <div
+              class="d-flex justify-content-between my-3 align-items-center px-4"
+            >
               <button
                 onclick="addProduct()"
                 id="addProd"
@@ -149,11 +187,11 @@
               />
             </div>
             <div class="d-flex flex-row-reverse my-3 px-4">
-                <input
+              <input
                 type="search"
                 oninput="searchByCategory()"
                 id="searchCategory"
-                class="form-control  w-50 border border-2 rounded-3"
+                class="form-control w-50 border border-2 rounded-3"
                 placeholder="Search product by category..."
               />
             </div>
@@ -163,16 +201,15 @@
       <section>
         <div class="container mt-5 py-5">
           <div class="d-flex justify-content-between align-items-center py-4">
-
             <div class="section-header d-flex align-items-center gap-2">
               <i class="fas fa-grid-vertical fs-4"></i>
               <h2 class="mb-0">Product Inventory</h2>
             </div>
 
-            <p class="badge text-bg-primary fs-5" id="badge-count"> Products</p>
+            <p class="badge text-bg-primary fs-5" id="badge-count">Products</p>
           </div>
           <div class="row g-4" id="prouductCards">
-           <!-- <div class="col-lg-4">
+            <!-- <div class="col-lg-4">
               <div class="card border-0 shadow">
                 <div class="position-relative">
                   <img
@@ -284,17 +321,25 @@
         <div class="row">
           <div class="col-12 col-md-6">
             <h5 class="fs-4 mb-3">Store Management System</h5>
-            <p class="mb-0 text-light ">Efficiently manage your product inventory with our easy-to-use system.</p>
+            <p class="mb-0 text-light">
+              Efficiently manage your product inventory with our easy-to-use
+              system.
+            </p>
           </div>
           <div class="col-12 col-md-6 text-md-end">
-            <p class="fs-5 mb-1">© 2023 Store Management System. All rights reserved.</p>
-            <p class="fs-5 mb-0">Made with <i class="fa-solid fa-heart" style="color:red;"></i> by Route Academy</p>
+            <p class="fs-5 mb-1">
+              © 2023 Store Management System. All rights reserved.
+            </p>
+            <p class="fs-5 mb-0">
+              Made with <i class="fa-solid fa-heart" style="color: red"></i> by
+              Route Academy
+            </p>
           </div>
         </div>
       </div>
     </footer>
-  
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./JS/bootstrap.bundle.min.js"></script>
     <script src="./JS/main.js"></script>
   </body>
